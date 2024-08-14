@@ -5,10 +5,9 @@ import com.sprint3.admission_test.domain.model.Medication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/medications")
@@ -22,4 +21,13 @@ public class MedicationController {
         return ResponseEntity.status(HttpStatus.OK).body(medicationUseCase.getMedicationById(id));
     }
 
+    @PostMapping()
+    public ResponseEntity<Medication> addMedication() {
+        return ResponseEntity.status(HttpStatus.CREATED).body(medicationUseCase.addMedication());
+    }
+
+    @GetMapping("/category/{category}?expiration-after={date}")
+    public ResponseEntity<Medication> getMedicationNextToEndByCategoryId(@PathVariable String category, @PathVariable LocalDate date) {
+        return ResponseEntity.status(HttpStatus.OK).body(medicationUseCase.getMedicationsNextToEndByCategoryId(category,date));
+    }
 }
